@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+      "baseUrl": "../node_modules",
+      "target": "esNext",
+      "lib": ["esNext", "dom"],
+      "types": ["cypress", "@4tw/cypress-drag-drop", "node"]
+    },
+    "include": ["**/*.ts"]
+  }
+  

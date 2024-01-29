@@ -1,0 +1,24 @@
+{
+  "name": "todo-app-automation-project",
+  "version": "1.0.0",
+  "description": "Automation project for TODO-APP",
+  "main": "index.js",
+  "scripts": {
+    "cy:open": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwyszynski1/todo-app-automation.git"
+  },
+  "author": "Konrad Wyszynski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kwyszynski1/todo-app-automation/issues"
+  },
+  "homepage": "https://github.com/kwyszynski1/todo-app-automation#readme",
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "2.2.5",
+    "cypress": "13.1.0",
+    "typescript": "5.3.3"
+  }
+} 

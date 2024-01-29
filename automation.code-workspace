@@ -1,0 +1,39 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "prettier.endOfLine": "auto",
+    "prettier.singleQuote": true,
+    "psi-header.config": {
+      "blankLinesAfter": 1,
+      "forceToTop": true,
+    },
+    "psi-header.templates": [
+      {
+        "language": "*",
+        "template": [
+          "Project: TODO APP - e2e automation",
+          "Author: <<author>>",
+          "Copyright © <<year>>, <<author>>"
+        ]
+      }
+    ],
+    "psi-header.changes-tracking": {
+      "isActive": true,
+      "enforceHeader": true,
+      "include": ["typescript", "javascript"],
+      "autoHeader": "autoSave"
+    },
+  }
+}
