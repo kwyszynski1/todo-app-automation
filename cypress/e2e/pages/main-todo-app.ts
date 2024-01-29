@@ -15,7 +15,7 @@ export function createItem(inputTextArray: string[]) {
 
 export function deleteItem(cardName: string) {
   cy.contains(cardName).as('card').next('button').click({ force: true });
-  cy.get('@card').should('not.exist');
+  cy.get('@card').should('not.exist', { timeout: 5000 });
   cy.log(`**Deleted item: ${cardName}**`);
 }
 

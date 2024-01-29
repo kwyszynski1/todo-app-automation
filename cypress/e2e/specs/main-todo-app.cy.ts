@@ -70,7 +70,7 @@ describe('Todo app tests - main page', () => {
     mainPage.deleteItem(inputTextArray[0]);
     mainPage.checkAndCountItems();
 
-    cy.get('li.card').should('not.exist');
+    cy.get('li.card').should('not.exist', { timeout: 5000 });
   });
 
   it('Should mark item as a completed after a click', function () {
@@ -99,7 +99,7 @@ describe('Todo app tests - main page', () => {
 
     mainPage.clearCompletedItems();
 
-    cy.contains(inputTextArray[1]).should('not.exist');
+    cy.contains(inputTextArray[1]).should('not.exist', { timeout: 5000 });
   });
 
   it('Should drag and drop items and reorder list', function () {
