@@ -4,51 +4,105 @@
  * Copyright © 2024, konrad.wyszynski
  */
 
-export function createItem(inputTextArray: string[]) {
-  inputTextArray.forEach((inputText) => {
-    cy.get('.card.add').should('be.visible').type(inputText);
-    cy.get('#add-btn').click();
-    cy.contains(inputText).should('be.visible');
-    cy.log(`**Created item: ${inputText}**`);
-  });
+class MainPage {
+  elements = {
+    body: () => cy.get('body'),
+
+    bodyLight: () => cy.get('body.light'),
+
+    header: () => cy.get('header'),
+
+    h1tag: () => cy.get('h1'),
+
+    themeSwitcher: () => cy.get('#theme-switcher'),
+
+    themeSwitcherIcon: () => cy.get('#theme-switcher img'),
+
+    footer: () => cy.get('footer'),
+
+    textBox: () => cy.get('input.txt-input'),
+
+    item: () => cy.get('li.card'),
+
+    itemWithName: (inputText: string) => cy.contains('li.card', inputText),
+
+    checkedItem: () => cy.get('.card.checked'),
+
+    checkedItemStatus: () => cy.get('.card.checked span.check'),
+
+    notCheckedItem: () => cy.get('li.card:not(.checked)'),
+
+    addItemButton: () => cy.get('#add-btn'),
+
+    completedItemRadioButton: () => cy.get('.cb-input'),
+
+    listOfItems: () => cy.get('ul.todos'),
+
+    numberOfItemsLeft: () => cy.get('#items-left'),
+
+    deleteButton: () => cy.get('button.clear'),
+
+    deleteButtonImage: () => cy.get('button.clear img'),
+
+    activeTab: () => cy.contains('Active'),
+
+    completedTab: () => cy.contains('Completed'),
+
+    clearCompletedItemsButton: () => cy.contains('Clear Completed'),
+  };
+
+  createItem(inputTextArray: string[]) {
+    inputTextArray.forEach((inputText) => {
+      this.elements.textBox().should('be.visible').type(inputText);
+      this.elements.addItemButton().click();
+      this.elements.itemWithName(inputText).should('be.visible');
+      cy.log(`**Created item: ${inputText}**`);
+    });
+  }
+
+  deleteItem(cardName: string) {
+    this.elements
+      .itemWithName(cardName)
+      .children('button')
+      .click({ force: true });
+    this.elements.itemWithName(cardName).should('not.exist', { timeout: 5000 });
+    cy.log(`**Deleted item: ${cardName}**`);
+  }
+
+  markItemAsCompleted(cardName: string) {
+    this.elements.itemWithName(cardName).within(() => {
+      this.elements.completedItemRadioButton().click();
+      cy.log('**Marked item as completed**');
+    });
+  }
+
+  checkAndCountItems() {
+    this.elements.listOfItems().then((list) => {
+      if (list.find('li').length > 0) {
+        this.elements
+          .notCheckedItem()
+          .its('length')
+          .then((itemsCount) => {
+            this.elements.numberOfItemsLeft().should('have.text', itemsCount);
+          });
+      } else cy.log('**There are no items in the list**');
+    });
+  }
+
+  clearCompletedItems() {
+    this.elements.clearCompletedItemsButton().click();
+    cy.log('**Clear Completed**');
+  }
+
+  goToActiveTab() {
+    this.elements.activeTab().click();
+    cy.log('**Switched to Active tab**');
+  }
+
+  goToCompletedTab() {
+    this.elements.completedTab().click();
+    cy.log('**Switched to Completed tab**');
+  }
 }
 
-export function deleteItem(cardName: string) {
-  cy.contains(cardName).as('card').next('button').click({ force: true });
-  cy.get('@card').should('not.exist', { timeout: 5000 });
-  cy.log(`**Deleted item: ${cardName}**`);
-}
-
-export function markItemAsCompleted(cardName: string) {
-  cy.contains('li.card', cardName).within(() => {
-    cy.get('input.cb-input').click();
-    cy.log('**Marked item as completed**');
-  });
-}
-
-export function checkAndCountItems() {
-  cy.get('ul.todos').then((list) => {
-    if (list.find('li').length > 0) {
-      cy.get('li.card:not(.checked)')
-        .its('length')
-        .then((itemsCount) => {
-          cy.get('#items-left').should('have.text', itemsCount);
-        });
-    } else cy.log('**There are no items in the list**');
-  });
-}
-
-export function clearCompletedItems() {
-  cy.contains('Clear Completed').click();
-  cy.log('**Clear Completed**');
-}
-
-export function goToActiveTab() {
-  cy.contains('Active').click();
-  cy.log('**Switched to Active tab**');
-}
-
-export function goToCompletedTab() {
-  cy.contains('Completed').click();
-  cy.log('**Switched to Completed tab**');
-}
+export default new MainPage();

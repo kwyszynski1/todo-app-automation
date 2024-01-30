@@ -5,7 +5,7 @@
  */
 
 import * as helper from '../utils/helper';
-import * as mainPage from '../pages/main-todo-app';
+import mainPage from '../pages/main-todo-app';
 
 describe('Todo app tests - main page', () => {
   before(() => {
@@ -17,22 +17,22 @@ describe('Todo app tests - main page', () => {
   });
 
   it('Should have background image, icon, header and a footer', function () {
-    cy.get('body.light')
+    mainPage.elements
+      .bodyLight()
       .should('have.css', 'background')
       .and('include', 'rgb(250, 250, 250)')
       .and('include', 'images/bg-desktop-light.jpg');
-    cy.get('header').within(() => {
-      cy.get('h1').should('have.text', 'TODO');
-      cy.get('#theme-switcher')
-        .children('img')
+    mainPage.elements.header().within(() => {
+      mainPage.elements.h1tag().should('have.text', 'TODO');
+      mainPage.elements
+        .themeSwitcherIcon()
         .should('have.attr', 'src', './assets/images/icon-moon.svg');
     });
-    cy.get('input.txt-input').should(
-      'have.attr',
-      'placeholder',
-      'Create a new todo...'
-    );
-    cy.get('footer')
+    mainPage.elements
+      .textBox()
+      .should('have.attr', 'placeholder', 'Create a new todo...');
+    mainPage.elements
+      .footer()
       .invoke('text')
       .then((textInFooter) => {
         expect(helper.convertStringToPlainText(textInFooter)).to.eq(
@@ -42,16 +42,15 @@ describe('Todo app tests - main page', () => {
   });
 
   it('Should switch to dark mode when the icon is clicked', function () {
-    cy.get('#theme-switcher').click();
-    cy.get('body')
+    mainPage.elements.themeSwitcher().click();
+    mainPage.elements
+      .body()
       .should('have.css', 'background')
       .and('include', 'rgb(22, 23, 34)')
       .and('include', 'images/bg-desktop-dark.jpg');
-    cy.get('#theme-switcher img').should(
-      'have.attr',
-      'src',
-      './assets/images/icon-sun.svg'
-    );
+    mainPage.elements
+      .themeSwitcherIcon()
+      .should('have.attr', 'src', './assets/images/icon-sun.svg');
   });
 
   it('Should create a new todo item and delete it', function () {
@@ -60,17 +59,18 @@ describe('Todo app tests - main page', () => {
     mainPage.createItem(inputTextArray);
     mainPage.checkAndCountItems();
 
-    cy.get('li p').should('have.text', inputTextArray[0]);
-    cy.get('.clear img').should(
-      'have.attr',
-      'src',
-      './assets/images/icon-cross.svg'
-    );
+    mainPage.elements
+      .item()
+      .children('p')
+      .should('have.text', inputTextArray[0]);
+    mainPage.elements
+      .deleteButtonImage()
+      .should('have.attr', 'src', './assets/images/icon-cross.svg');
 
     mainPage.deleteItem(inputTextArray[0]);
     mainPage.checkAndCountItems();
 
-    cy.get('li.card').should('not.exist', { timeout: 5000 });
+    mainPage.elements.item().should('not.exist', { timeout: 5000 });
   });
 
   it('Should mark item as a completed after a click', function () {
@@ -86,16 +86,17 @@ describe('Todo app tests - main page', () => {
     mainPage.goToCompletedTab();
 
     cy.contains(inputTextArray[1]).should('be.visible');
-    cy.get('.card.checked span.check').should(
-      'have.css',
-      'background-color',
-      'rgb(87, 221, 255)'
-    );
-    cy.get('.card.checked p').should(
-      'have.css',
-      'text-decoration',
-      'line-through solid rgb(210, 209, 214)'
-    );
+    mainPage.elements
+      .checkedItemStatus()
+      .should('have.css', 'background-color', 'rgb(87, 221, 255)');
+    mainPage.elements
+      .checkedItem()
+      .children('p')
+      .should(
+        'have.css',
+        'text-decoration',
+        'line-through solid rgb(210, 209, 214)'
+      );
 
     mainPage.clearCompletedItems();
 
@@ -107,10 +108,11 @@ describe('Todo app tests - main page', () => {
 
     mainPage.createItem(inputTextArray);
 
-    cy.get('li:first-child').drag('li:nth-child(3)', {
+    mainPage.elements.item().first().drag('li:nth-child(3)', {
       force: true,
       log: false,
     });
-    cy.get('li:nth-child(3)').should('have.text', 'First item');
+
+    mainPage.elements.item().eq(2).should('have.text', 'First item');
   });
 });
