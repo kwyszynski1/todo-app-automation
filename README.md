@@ -1,6 +1,6 @@
 # Introduction 
 <br> 
-Test automation project for TODO-APP written using Cypress/Typescript. It includes workspace file for best-practice and clean code.
+🚀Cypress Page Object Model project for a simple task management app. It includes workspace file for best-practice and clean code. <br> App: https://todo-app-for-cyclope.netlify.app/
 <br> 
 
 # Getting Started
@@ -10,7 +10,9 @@ Test automation project for TODO-APP written using Cypress/Typescript. It includ
 - in new terminal run <code> npm install --save-dev </code>
 - after succesfull installation of all packages run <code> npx cypress open </code>
 
-# Tools
-- Cypress
+# Tools & Languages
+- cypress
+- typescript
 - cypress-drag-drop plugin
 - node.js
+  
